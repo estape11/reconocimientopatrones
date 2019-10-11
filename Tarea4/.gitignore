@@ -1,2 +1,4 @@
 samples
 test*
+model.json
+model.h5
