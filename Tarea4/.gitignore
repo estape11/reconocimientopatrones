@@ -1,4 +1,3 @@
 samples
 test*
-model.json
-model.h5
+__pycache__
