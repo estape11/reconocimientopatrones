@@ -12,7 +12,7 @@
              2015070913
 ##################################################
 """
-
+from sklearn.metrics import confusion_matrix
 from sklearn import svm
 from mnist import MNIST
 import random
@@ -20,7 +20,7 @@ import random
 # Ruta de los datos de entrenamiento/prueba
 mndata = MNIST('samples')
 
-cantidadDatos = 1000
+cantidadDatos = 1000 
 
 images, labels = mndata.load_training()
 imagesTest, labelsTest = mndata.load_testing()
@@ -28,23 +28,21 @@ imagesTest, labelsTest = mndata.load_testing()
  # Se utiliza solo la cantidad establecida
 sImages = images[:cantidadDatos]
 sLabels = labels[:cantidadDatos]
-#sImagesTest = imagesTest[:cantidadDatos]
-#sLabelsTest = labelsTest[:cantidadDatos]
+sImagesTest = imagesTest[:cantidadDatos]
+sLabelsTest = labelsTest[:cantidadDatos]
 
 def main():
 	print("> Cantidad de datos de entrenamiento:", cantidadDatos)
+	print("> Entrenando ...")
 	clf = svm.SVC(C=1.0, kernel='rbf', degree=3, gamma='scale', coef0=0.0, shrinking=True, probability=False, tol=0.001, cache_size=200, class_weight=None, verbose=False, max_iter=-1, decision_function_shape='ovr', random_state=None)
 	clf.fit(sImages, sLabels)
+	print("> Completado")
 
+	print("> Número al azar")
 	index = random.randrange(0, cantidadDatos)
 	resultado = clf.predict([imagesTest[index]])
 
 	print(mndata.display(imagesTest[index]))
-
-	print(len(imagesTest[index]))
-
-	print("> Imagen")
-	print(imagesTest[index])
 	k = 0
 	cadena = ""
 	for i in range(0,28):
@@ -63,6 +61,11 @@ def main():
 
 	print("> Label calculado")
 	print(resultado[0])
+
+	print("> Matriz de confusion")
+
+	sLabelsTestPred =  clf.predict(sImagesTest)
+	print(confusion_matrix(list(sLabelsTest), sLabelsTestPred,labels=[0,1,2,3,4,5,6,7,8,9]))
 	return 0
 
 main()
