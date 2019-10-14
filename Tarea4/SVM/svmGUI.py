@@ -17,6 +17,8 @@ from sklearn import svm
 from mnist import MNIST
 from tkinter import *
 from tkinter import messagebox
+from joblib import dump, load
+import os.path
 
 # Ruta de los datos de entrenamiento/prueba
 mndata = MNIST('samples')
@@ -43,6 +45,8 @@ x = 28
 y = 28
 factorX = xReal//x 
 factorY = yReal//y
+
+filename = 'model.joblib'
 
 # Genera la matriz del dibujo
 def genMatriz(x,y):
@@ -103,14 +107,23 @@ def motion(event):
 
 def main():
 	global clf
-	print("> Cantidad de datos de entrenamiento:", cantidadDatos)
-	print("> Entrenando ...")
-	clf = svm.SVC(C=1.0, kernel='rbf', degree=3, gamma='scale', coef0=0.0, shrinking=True, probability=False, tol=0.0001, cache_size=200, class_weight=None, verbose=False, max_iter=-1, decision_function_shape='ovr', random_state=None)
-	clf.fit(sImages, sLabels)
-	print("> Completado")
+	if (os.path.exists(filename)):
+		print("> Cargando los datos del modelo ...")
+		# Carga los datos del modelo
+		clf = load(filename)
+		print("> Completado")
+
+	else:
+		print("> Cantidad de datos de entrenamiento:", cantidadDatos)
+		print("> Entrenando ...")
+		clf = svm.SVC(C=1.0, kernel='rbf', degree=3, gamma='scale', coef0=0.0, shrinking=True, probability=False, tol=0.001, cache_size=200, class_weight=None, verbose=False, max_iter=-1, decision_function_shape='ovr', random_state=None)
+		clf.fit(sImages, sLabels)
+		print("> Guardando modelo ...")
+		dump(clf, filename)
+		print("> Completado")
 
 	ventana = Tk()
-	ventana.title("Identificador de Números")
+	ventana.title("Dibuje un número")
 	areaDibujo = Canvas(ventana,width=xReal,height=yReal)
 	areaDibujo.pack()
 	areaDibujo.bind("<Motion>", motion)
