@@ -49,6 +49,48 @@ def printNum(num):
 		print(cadena)
 		cadena=""
 
+# Total numbers of: 
+# false negative 
+def tfn(matConfu, clase):
+	numClases = len(matConfu[0])
+	temp = 0
+	for j in range (0, numClases):
+		if j != clase :
+			temp+=matConfu[clase][j]
+			
+	return temp
+
+# false positive
+def tfp(matConfu, clase):
+	numClases = len(matConfu[0])
+	temp = 0
+	for j in range (0, numClases):
+		if j != clase :
+			temp+=matConfu[j][clase]
+			
+	return temp
+
+# true negative
+def ttn(matConfu, clase):
+	numClases = len(matConfu[0])
+	temp = 0
+	for j in range (0, numClases):
+		if j != clase :
+			for k in range(0, numClases):
+				if k != clase :
+					temp+=matConfu[j][k]
+			
+	return temp
+
+# all TTP
+def ttpAll(matConfu):
+	numClases = len(matConfu[0])
+	temp = 0
+	for j in range (0, numClases):
+		temp+=matConfu[j][j]
+
+	return temp
+
 def main():
 	if (os.path.exists(filename)):
 		print("> Cargando los datos del modelo ...")
@@ -77,9 +119,23 @@ def main():
 	print("> Numero detectado:", resultado[0],"\n")
 
 	print("> Matriz de confusion")
-	sLabelsTestPred =  clf.predict(sImages)
-	print(confusion_matrix(list(sLabels), sLabelsTestPred,labels=[0,1,2,3,4,5,6,7,8,9]),"\n")
+	clases = [0,1,2,3,4,5,6,7,8,9]
+	sLabelsTestPred =  clf.predict(sImagesTest)
+	matConfu = confusion_matrix(list(sLabelsTest), sLabelsTestPred,labels=clases)
+	print(matConfu,"\n")
+	ttpAllVal = ttpAll(matConfu)
 
+	print("> Valores de Precision y Recall por clase")
+	for clase in clases:
+		tfp_i = tfp(matConfu, clase)
+		p_i = ttpAllVal/(ttpAllVal+tfp_i)
+		tfn_i = tfn(matConfu, clase)
+		r_i = ttpAllVal/(ttpAllVal+tfn_i)
+		print("> Clase:", clase)
+		print("\tP =",p_i)
+		print("\tR =",r_i)
+	#print(matConfu.ravel())
+	print("AC general =",(ttpAllVal/cantidadDatos))
 	return 0
 
 main()
