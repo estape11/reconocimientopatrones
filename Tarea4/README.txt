@@ -17,14 +17,18 @@ Se requieren de las siguientes bibliotecas para ejecutar los programas:
 	>	python-mnist
 	>	tkinter
 
-Para poder emplear MNIST
-	>	$ ./prepare.sh
+Para ejecutar el ejemplo de SVM
+	>	$ cd SVM
+	>	$ ./prepare.sh // Para poder emplear MNIST con SVM
+	>	$ python3 svm.py // ejemplo de entrenamiento y matriz de confusión
+		*	Si se desea re-entranar al modelo, se debe eliminar el archivo model.joblib
+			>	$ rm model.joblib
+			>	$ python3 svm.py
 
-Para correr el ejemplo de SVM
-	>
+	>	$ python3 svmGUI.py // programa de entrada de gráfica
 
-Para correr el ejemplo de keras
-	> $cd keras
+Para ejecutar el ejemplo de keras
+	> $ cd keras
 
 	"MAIN file, con interfaz de usurio, creación y lectura del modelo"
 
