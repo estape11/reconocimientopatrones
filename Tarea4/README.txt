@@ -11,7 +11,8 @@
              2015070913
 ##################################################
 
-Se requieren de las siguientes bibliotecas para ejecutar los programas:
+Se requieren de las siguientes bibliotecas para ejecutar los programas/bibliotecas:
+	>	python3
 	>	sklearn
 	>	numpy
 	>	python-mnist
@@ -24,7 +25,8 @@ Para ejecutar el ejemplo de SVM
 		*	Si se desea re-entranar al modelo, se debe eliminar el archivo model.joblib
 			>	$ rm model.joblib
 			>	$ python3 svm.py
-
+		*	Dentro de svm.py se puede realizar la modificación de la cantidad de datos para el
+			entrenamiento, para volver a entrenar se debe eliminar el archivo model.joblib
 	>	$ python3 svmGUI.py // programa de entrada de gráfica
 
 Para ejecutar el ejemplo de keras
@@ -32,14 +34,14 @@ Para ejecutar el ejemplo de keras
 
 	"MAIN file, con interfaz de usurio, creación y lectura del modelo"
 
-	> $python3 deepLearningKeras.py  
+	> $ python3 deepLearningKeras.py  
 
 	"Archivo con función de creación y graficación de los errores"
 
 	Para la creación de las graficas se debe descomentar la llamada en la ultima linea de codigo de este archivo.
 
-	> $python3 keras_create_model.py
+	> $ python3 keras_create_model.py
 
 	"Archivo con lectura y reconstrucción del modelo"
 
-	> $python3 keras_read_model.py
+	> $ python3 keras_read_model.py
