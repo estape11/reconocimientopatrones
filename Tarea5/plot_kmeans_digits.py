@@ -49,7 +49,7 @@ n_samples, n_features = data.shape
 
 # Cantidad de centroides
 #n_digits = len(np.unique(digits.target)) # numero de k
-n_digits = 4
+n_digits = 20
 
 labels = digits.target
 
@@ -95,7 +95,8 @@ print(82 * '_')
 # #############################################################################
 # Visualize the results on PCA-reduced data
 
-reduced_data = PCA(n_components=2).fit_transform(data)
+pca = PCA(n_components=2)
+reduced_data = pca.fit_transform(data)
 kmeans = KMeans(init='k-means++', n_clusters=n_digits, n_init=10)
 kmeans.fit(reduced_data)
 
@@ -120,8 +121,10 @@ plt.imshow(Z, interpolation='nearest',
            aspect='auto', origin='lower')
 
 plt.plot(reduced_data[:, 0], reduced_data[:, 1], 'k.', markersize=2)
+
 # Plot the centroids as a white X
 centroids = kmeans.cluster_centers_
+
 plt.scatter(centroids[:, 0], centroids[:, 1],
             marker='x', s=169, linewidths=3,
             color='w', zorder=10)
@@ -132,3 +135,38 @@ plt.ylim(y_min, y_max)
 plt.xticks(())
 plt.yticks(())
 plt.show()
+
+# Codigo extra para la representacion de los centroides en sus dimensiones originales 
+# como imagenes de 8x8 (64D)
+
+# transformacion inversa del PCA realizado sobre los centroides
+invers_tranf = pca.inverse_transform(centroids)
+
+# creacion de la figura a mostrar
+fig = plt.figure()
+
+# calculo de la cantidad de filas y columnas para las imagenes a mostrar en el plort
+if(n_digits%2 == 0):
+      rows = n_digits/2
+      columns = n_digits/2
+      if(n_digits == 10):
+            rows = 4
+            columns = 3
+      elif(n_digits == 20):
+            rows = 5
+            columns = 4
+else:
+      rows = round(n_digits/2) + 1
+      columns = round(n_digits/2) -1 
+
+# contador de las imagenes a agregar en el plot
+i = 1
+
+# for loop para agregar todas las imagenes de los centroides obtenidos 
+for item in invers_tranf:
+      new_img = np.array(item)     # convierte el centroide en un numpy array
+      new_img = np.reshape(new_img, (8,8))    # hace l reshape del array a una matriz de 8x8
+      fig.add_subplot(rows, columns, i)    # añade el subplot a la figura original
+      i += 1      # incrementa el contador de imagen
+      plt.imshow(new_img, cmap=plt.cm.gray_r, interpolation='nearest') #muestra la imagen en el plot principal
+plt.show()  # muestra la figura final conformada
