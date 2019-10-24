@@ -136,6 +136,7 @@ plt.xticks(())
 plt.yticks(())
 plt.show()
 
+# #############################################################################
 # Codigo extra para la representacion de los centroides en sus dimensiones originales 
 # como imagenes de 8x8 (64D)
 
